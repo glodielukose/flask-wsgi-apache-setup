@@ -1,67 +1,73 @@
-Pour un README efficace, suivez une structure claire qui permet aux utilisateurs de comprendre rapidement l'objectif de votre projet et de suivre les étapes du tutoriel. Voici un guide pour organiser votre README :
 
----
+### 1. **Déployer une Application Flask sur Apache avec WSGI**
 
-### 1. **Titre du Projet**
-   - Ex : **Déployer une Application Flask sur Apache avec WSGI**
+### 2. **Table des Matières**
+   - [Description](#3-description)
+   - [Prérequis](#4-prérequis)
+   - [Installation](#5-installation)
+   - [Configuration de l'application Flask]()
+   - [Configuration d'Apache](#7-configuration-dapache)
 
-### 2. **Description**
-   - Un bref aperçu expliquant le but du projet : déployer une application Flask sur un serveur Apache en utilisant WSGI.
-   - Mentionnez pourquoi ce tutoriel est utile, et ce que les utilisateurs vont apprendre.
+### 3. **Description**
+  Le but de ce README est de vous montrer comment on peut deployer une application flask sur apache grace à wsgi : 
 
-### 3. **Table des Matières** *(optionnel mais utile)*
-   - Incluez une table des matières pour une navigation facile.
-   ```
-   - Prérequis
-   - Installation
-   - Configuration de l'application Flask
-   - Configuration d'Apache
-   - Lancer le serveur
-   - Résolution de problèmes
-   ```
+  * **Flask** : c'est un mini-framework Python qui nous simplifie la création des applications web
+  * **Apache** : Apache est un serveur web qui permet gère les differentes requetes en production et les redistribuent aux applications, mais apache à lui seul ne pas gerer des requete python, on aura donc besoin d'une pacerelle
+  * **WSGI** : Apache est une norme qui va nous permettre de relier des applications web fait avec des framework comme (Flask, Django) avec des serveurs web comme (Apache, NGinx)
+
+
+  On va construire pas à pas une application flask et ensuite la deployer sur un serveur Apache en utilisant une pacerrelle commen WSGI
 
 ### 4. **Prérequis**
-   - Listez les outils et versions nécessaires (Python, Flask, Apache, mod_wsgi).
-   - Par exemple :
-     ```markdown
-     - Python 3.x
-     - Flask
-     - Apache HTTP Server
-     - Module WSGI (mod_wsgi)
-     ```
+   - Python, Flask
+   - Ubuntu 22.04
 
 ### 5. **Installation**
-   - Expliquez comment installer Flask et mod_wsgi.
-   - Ajoutez des commandes pour installer les dépendances.
-     ```bash
-     pip install flask
-     sudo apt-get install apache2
-     sudo apt-get install libapache2-mod-wsgi-py3
-     ```
+   - Pour commencer on va devoir installer Python, apache et une pacerelle wsgi sur notre machine à partir du terminal :
+      * Premièrement on met à jour les paquets
+         ```bash
+         sudo apt update -y
+         ```
+      #### 1. Installation de Apache
+      * On installe apache avec la commande suivant :
+         ```bash
+         sudo apt install apache2
+         ```
+      * Une fois que apache est installer on va le lancer :
+         ```bash
+         sudo systemctl enable apache2 && sudo systemctl start apache2
+         ```
+      * On vérifie si apache fonctionne correctement :
+         ```bash
+            sudo systemctl statut apache2
+         ``` 
+         on aura le resultat suivant :
+         ```bash
+         root@host:~$ sudo systemctl status apache2
+         ● apache2.service - The Apache HTTP Server
+            Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor prese>
+            Active: active (running) since Fri 2024-11-01 22:13:30 CAT; 14h ago
+               Docs: https://httpd.apache.org/docs/2.4/
+            Main PID: 313822 (apache2)
+               Tasks: 63 (limit: 18941)
+            Memory: 32.0M
+               CPU: 2.195s
+            CGroup: /system.slice/apache2.service
+                     ├─313822 /usr/sbin/apache2 -k start
+                     ├─313823 /usr/sbin/apache2 -k start
+                     ├─313824 /usr/sbin/apache2 -k start
+                     └─313825 /usr/sbin/apache2 -k start
 
-### 6. **Configuration de l’Application Flask**
-   - Donnez des instructions pour créer une simple application Flask.
-   - Montrez comment structurer l'application pour qu'elle soit compatible avec WSGI.
-     ```python
-     # app.py
-     from flask import Flask
+         Nov 01 22:13:29 host systemd[1]: Starting The Apache HTTP Server...
+         ```
+      #### 2. Installation de WSGI
+      * Pour ce faire on utilise la fonction suivante :
+         ```bash
+         sudo apt install libapache2-mod-wsgi-py3
+         ```
 
-     app = Flask(__name__)
-
-     @app.route("/")
-     def home():
-         return "Hello, Apache with Flask and WSGI!"
-
-     if __name__ == "__main__":
-         app.run()
-     ```
-   - Expliquez comment utiliser `app.wsgi` :
-     ```python
-     # app.wsgi
-     import sys
-     sys.path.insert(0, "/chemin/vers/votre/application")
-     from app import app as application
-     ```
+### 6. **Configuration de l'environnement Python et de l’Application Flask**
+   
 
 ### 7. **Configuration d'Apache**
    - Décrivez comment créer un fichier de configuration Apache pour le site.
