@@ -28,7 +28,13 @@
          ```bash
          sudo apt update -y
          ```
-      #### 1. Installation de Apache
+      #### 1. Installation et mise en place Python
+      Pour installer Python il faut taper les commandes suivantes:
+      ```bash
+      sudo apt install python3 python3-pip python3-venv
+      ```
+
+      #### 2. Installation de Apache
       * On installe apache avec la commande suivant :
          ```bash
          sudo apt install apache2
@@ -60,14 +66,69 @@
 
          Nov 01 22:13:29 host systemd[1]: Starting The Apache HTTP Server...
          ```
-      #### 2. Installation de WSGI
+      #### 3. Installation de WSGI
       * Pour ce faire on utilise la fonction suivante :
          ```bash
          sudo apt install libapache2-mod-wsgi-py3
          ```
 
 ### 5. **Configuration de l'environnement Python et de l’Application Flask**
-   
+   À cette étape on va creer un environnement Python dans notre machine mais avant cela on va cloner le projet sur notre machine :
+   #### 1. Clonage du projet sur notre machine
+   * On ouvre le dossier www :
+      ```bash
+      cd /var/www
+      ```
+   * Ensuite on clone le projet dans ce repectoire :
+      ```bash
+      git clone <url project>
+      ```
+      ```bash
+      git clone git@github.com:glodielukose/flask-wsgi-apache-setup.git
+      ```
+   * Si jamais on ne vous donne pas la permission rassurer vous d'avoir les authorisation requises:
+      ```bash
+      sudo shown -R user /var/www
+      ```
+   #### 2. Creation de l'environnement virtuelle Python
+   * Premierement on entre dans le repectoire de notre projet:
+      ```bash
+      cd /var/www/flask-wsgi-apache-setup
+      ```
+   * On crée l'environnement à l'intérieure de notre projet
+      ```bash
+      python3 -m venv flask-venv
+      ```
+   * Ensuite on active l'environnemt :
+      ```bash
+      source flask-env/bin/activate
+      ```
+
+   #### 3. Installation des differentes dépendances 
+   ```bash
+   pip3 install flask
+   ```
+
+   une fois que flask est installé on definit la variable d'environnement `FLASK_APP`
+   ```bash
+   export FLASK_APP=app.py
+   ```
+
+   ensuite on test pour voir si tout fonctionne correctement :
+   ```bash
+   flask run --host=0.0.0.0
+   ```
+   si tout ce passe bien on aura le resultat suivant :
+   ```bash
+   root@host:/var/www/flask-wsgi-apache-setup$ flask run --host=0.0.0.0
+   * Debug mode: off
+   WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+   * Running on all addresses (0.0.0.0)
+   * Running on http://127.0.0.1:5000
+   * Running on http://127.0.0.1:5000
+   Press CTRL+C to quit
+   ```
+
 
 ### 6. **Configuration d'Apache**
    - Décrivez comment créer un fichier de configuration Apache pour le site.
