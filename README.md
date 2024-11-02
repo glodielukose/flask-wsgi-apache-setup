@@ -1,14 +1,14 @@
 
-### 1. **Déployer une Application Flask sur Apache avec WSGI**
+# **Déployer une Application Flask sur Apache avec WSGI**
 
-### 2. **Table des Matières**
+### 1. **Table des Matières**
    - [Description](#3-description)
    - [Prérequis](#4-prérequis)
    - [Installation](#5-installation)
    - [Configuration de l'application Flask]()
    - [Configuration d'Apache](#7-configuration-dapache)
 
-### 3. **Description**
+### 2. **Description**
   Le but de ce README est de vous montrer comment on peut deployer une application flask sur apache grace à wsgi : 
 
   * **Flask** : c'est un mini-framework Python qui nous simplifie la création des applications web
@@ -18,11 +18,11 @@
 
   On va construire pas à pas une application flask et ensuite la deployer sur un serveur Apache en utilisant une pacerrelle commen WSGI
 
-### 4. **Prérequis**
+### 3. **Prérequis**
    - Python, Flask
    - Ubuntu 22.04
 
-### 5. **Installation**
+### 4. **Installation**
    - Pour commencer on va devoir installer Python, apache et une pacerelle wsgi sur notre machine à partir du terminal :
       * Premièrement on met à jour les paquets
          ```bash
@@ -39,7 +39,7 @@
          ```
       * On vérifie si apache fonctionne correctement :
          ```bash
-            sudo systemctl statut apache2
+            sudo systemctl status apache2
          ``` 
          on aura le resultat suivant :
          ```bash
@@ -66,10 +66,10 @@
          sudo apt install libapache2-mod-wsgi-py3
          ```
 
-### 6. **Configuration de l'environnement Python et de l’Application Flask**
+### 5. **Configuration de l'environnement Python et de l’Application Flask**
    
 
-### 7. **Configuration d'Apache**
+### 6. **Configuration d'Apache**
    - Décrivez comment créer un fichier de configuration Apache pour le site.
    - Expliquez comment configurer le module WSGI pour pointer vers votre application.
      ```apache
@@ -87,18 +87,18 @@
      ```
    - Incluez des instructions pour redémarrer Apache pour appliquer les modifications.
 
-### 8. **Tester l'Application**
+### 7. **Tester l'Application**
    - Montrez comment vérifier que le déploiement a bien fonctionné, en accédant à l'adresse IP ou au domaine du serveur.
 
-### 9. **Résolution de Problèmes**
+### 8. **Résolution de Problèmes**
    - Mentionnez les erreurs courantes, comme des permissions ou des erreurs de chemin.
    - Proposez des solutions ou des liens vers des ressources.
 
-### 10. **Ressources Utiles**
+### 9. **Ressources Utiles**
    - Ajoutez des liens vers la documentation officielle de Flask, Apache, et WSGI.
 
-### 11. **Licence**
-   - Si vous avez une licence spécifique pour votre projet, précisez-la ici.
+### 10. **Licence**
+   MIT License
 
 ---
 
@@ -125,27 +125,4 @@ Ce guide explique comment déployer une application Flask sur un serveur Apache 
 - Flask
 - Apache HTTP Server
 - Module WSGI (mod_wsgi)
-
-## Installation
-...
-
-## Configuration de l'Application Flask
-...
-
-## Configuration d'Apache
-...
-
-## Tester l'Application
-...
-
-## Résolution de Problèmes
-...
-
-## Ressources Utiles
-...
-
-## Licence
-MIT License
 ```
-
-Ce modèle de README est à la fois informatif et concis, tout en étant facile à suivre.
