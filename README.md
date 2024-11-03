@@ -1,14 +1,14 @@
 # **Déployer une Application Flask sur Apache avec WSGI**
 
 ### 1. **Table des Matières**
-   - [Description](#description)
-   - [Prérequis](#prérequis)
-   - [Installation](#installation)
-   - [Configuration de l'application Flask](#configuration-de-lapplication-flask)
-   - [Configuration d'Apache](#configuration-dapache)
-   - [Tester l'Application](#tester-lapplication)
-   - [Ressources Utiles](#ressources-utiles)
-   - [Licence](#licence)
+   - [Description](#2-description)
+   - [Prérequis](#3-prérequis)
+   - [Installation](#4-installation)
+   - [Configuration de l'application Flask](#5-configuration-de-lenvironnement-python-et-de-lapplication-flask)
+   - [Configuration d'Apache](#2-configuration-dapache)
+   - [Tester l'Application](#7-tester-lapplication)
+   - [Ressources Utiles](#8-ressources-utiles)
+   - [Licence](#9-licence)
 
 ### 2. **Description**
   Ce guide vous montre comment déployer une application Flask sur un serveur Apache grâce à WSGI.
