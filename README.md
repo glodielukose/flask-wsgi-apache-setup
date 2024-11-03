@@ -1,189 +1,168 @@
-
 # **Déployer une Application Flask sur Apache avec WSGI**
 
 ### 1. **Table des Matières**
-   - [Description](#3-description)
-   - [Prérequis](#4-prérequis)
-   - [Installation](#5-installation)
-   - [Configuration de l'application Flask]()
-   - [Configuration d'Apache](#7-configuration-dapache)
+   - [Description](#description)
+   - [Prérequis](#prérequis)
+   - [Installation](#installation)
+   - [Configuration de l'application Flask](#configuration-de-lapplication-flask)
+   - [Configuration d'Apache](#configuration-dapache)
+   - [Tester l'Application](#tester-lapplication)
+   - [Ressources Utiles](#ressources-utiles)
+   - [Licence](#licence)
 
 ### 2. **Description**
-  Le but de ce README est de vous montrer comment on peut deployer une application flask sur apache grace à wsgi : 
+  Ce guide vous montre comment déployer une application Flask sur un serveur Apache grâce à WSGI.
 
-  * **Flask** : c'est un mini-framework Python qui nous simplifie la création des applications web
-  * **Apache** : Apache est un serveur web qui permet gère les differentes requetes en production et les redistribuent aux applications, mais apache à lui seul ne pas gerer des requete python, on aura donc besoin d'une pacerelle
-  * **WSGI** : Apache est une norme qui va nous permettre de relier des applications web fait avec des framework comme (Flask, Django) avec des serveurs web comme (Apache, NGinx)
+  * **Flask** : un micro-framework Python facilitant la création d'applications web.
+  * **Apache** : un serveur web qui gère les différentes requêtes en production et les redirige vers les applications appropriées. Cependant, Apache ne peut pas traiter les requêtes Python seul ; une passerelle est nécessaire.
+  * **WSGI** : une norme qui permet de connecter des applications web développées avec des frameworks comme Flask ou Django à des serveurs web tels qu'Apache ou Nginx.
 
-
-  On va construire pas à pas une application flask et ensuite la deployer sur un serveur Apache en utilisant une pacerrelle commen WSGI
+  Nous allons construire pas à pas une application Flask, puis la déployer sur un serveur Apache en utilisant une passerelle WSGI.
 
 ### 3. **Prérequis**
    - Python, Flask
    - Ubuntu 22.04
 
 ### 4. **Installation**
-   - Pour commencer on va devoir installer Python, apache et une pacerelle wsgi sur notre machine à partir du terminal :
-      * Premièrement on met à jour les paquets
-         ```bash
-         sudo apt update -y
-         ```
-      #### 1. Installation et mise en place Python
-      Pour installer Python il faut taper les commandes suivantes:
-      ```bash
-      sudo apt install python3 python3-pip python3-venv
-      ```
+   Commençons par installer Python, Apache et la passerelle WSGI sur notre machine via le terminal :
 
-      #### 2. Installation de Apache
-      * On installe apache avec la commande suivant :
-         ```bash
-         sudo apt install apache2
-         ```
-      * Une fois que apache est installer on va le lancer :
-         ```bash
-         sudo systemctl enable apache2 && sudo systemctl start apache2
-         ```
-      * On vérifie si apache fonctionne correctement :
-         ```bash
-            sudo systemctl status apache2
-         ``` 
-         on aura le resultat suivant :
-         ```bash
-         root@host:~$ sudo systemctl status apache2
-         ● apache2.service - The Apache HTTP Server
-            Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor prese>
-            Active: active (running) since Fri 2024-11-01 22:13:30 CAT; 14h ago
-               Docs: https://httpd.apache.org/docs/2.4/
-            Main PID: 313822 (apache2)
-               Tasks: 63 (limit: 18941)
-            Memory: 32.0M
-               CPU: 2.195s
-            CGroup: /system.slice/apache2.service
-                     ├─313822 /usr/sbin/apache2 -k start
-                     ├─313823 /usr/sbin/apache2 -k start
-                     ├─313824 /usr/sbin/apache2 -k start
-                     └─313825 /usr/sbin/apache2 -k start
+   - Mettez à jour les paquets :
+     ```bash
+     sudo apt update -y
+     ```
 
-         Nov 01 22:13:29 host systemd[1]: Starting The Apache HTTP Server...
-         ```
-      #### 3. Installation de WSGI
-      * Pour ce faire on utilise la fonction suivante :
-         ```bash
-         sudo apt install libapache2-mod-wsgi-py3
-         ```
+   #### 1. Installation de Python
+   Installez Python avec les commandes suivantes :
+   ```bash
+   sudo apt install python3 python3-pip python3-venv
+   ```
 
-### 5. **Configuration de l'environnement Python et de l’Application Flask**
-   À cette étape on va creer un environnement Python dans notre machine mais avant cela on va cloner le projet sur notre machine :
-   #### 1. Clonage du projet sur notre machine
-   * On ouvre le dossier www :
-      ```bash
-      cd /var/www
-      ```
-   * Ensuite on clone le projet dans ce repectoire :
-      ```bash
-      git clone <url project>
-      ```
-      ```bash
-      git clone git@github.com:glodielukose/flask-wsgi-apache-setup.git
-      ```
-   * Si jamais on ne vous donne pas la permission rassurer vous d'avoir les authorisation requises:
-      ```bash
-      sudo shown -R user /var/www
-      ```
-   #### 2. Creation de l'environnement virtuelle Python
-   * Premierement on entre dans le repectoire de notre projet:
-      ```bash
-      cd /var/www/flask-wsgi-apache-setup
-      ```
-   * On crée l'environnement à l'intérieure de notre projet
-      ```bash
-      python3 -m venv flask-venv
-      ```
-   * Ensuite on active l'environnemt :
-      ```bash
-      source flask-env/bin/activate
-      ```
+   #### 2. Installation d'Apache
+   - Installez Apache :
+     ```bash
+     sudo apt install apache2
+     ```
+   - Lancez Apache :
+     ```bash
+     sudo systemctl enable apache2 && sudo systemctl start apache2
+     ```
+   - Vérifiez le statut d'Apache :
+     ```bash
+     sudo systemctl status apache2
+     ```
 
-   #### 3. Installation des differentes dépendances 
+   #### 3. Installation de WSGI
+   Installez le module WSGI pour Apache :
+   ```bash
+   sudo apt install libapache2-mod-wsgi-py3
+   ```
+
+### 5. **Configuration de l'Environnement Python et de l’Application Flask**
+   À cette étape, nous allons créer un environnement Python et cloner le projet sur notre machine.
+
+   #### 1. Clonage du projet
+   - Accédez au dossier www :
+     ```bash
+     cd /var/www
+     ```
+   - Clonez le projet :
+     ```bash
+     git clone <url project>
+     ```
+
+   #### 2. Création de l'Environnement Virtuel Python
+   - Accédez au répertoire du projet :
+     ```bash
+     cd /var/www/flask-wsgi-apache-setup
+     ```
+   - Créez l'environnement virtuel dans le projet :
+     ```bash
+     python3 -m venv flask-venv
+     ```
+   - Activez l'environnement :
+     ```bash
+     source flask-venv/bin/activate
+     ```
+
+   #### 3. Installation des dépendances
+   Installez Flask :
    ```bash
    pip3 install flask
    ```
 
-   une fois que flask est installé on definit la variable d'environnement `FLASK_APP`
+   Définissez la variable d'environnement `FLASK_APP` :
    ```bash
    export FLASK_APP=app.py
    ```
 
-   ensuite on test pour voir si tout fonctionne correctement :
+   Testez si tout fonctionne correctement :
    ```bash
    flask run --host=0.0.0.0
    ```
-   si tout ce passe bien on aura le resultat suivant :
+
+   Une fois le test terminé, désactivez l'environnement :
    ```bash
-   root@host:/var/www/flask-wsgi-apache-setup$ flask run --host=0.0.0.0
-   * Debug mode: off
-   WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-   * Running on all addresses (0.0.0.0)
-   * Running on http://127.0.0.1:5000
-   * Running on http://127.0.0.1:5000
-   Press CTRL+C to quit
+   deactivate
    ```
 
-
 ### 6. **Configuration d'Apache**
-   - Décrivez comment créer un fichier de configuration Apache pour le site.
-   - Expliquez comment configurer le module WSGI pour pointer vers votre application.
-     ```apache
-     <VirtualHost *:80>
-         ServerName votre-domaine.com
-         WSGIScriptAlias / /chemin/vers/app.wsgi
-         <Directory /chemin/vers/votre/application>
-             Require all granted
-         </Directory>
-         Alias /static /chemin/vers/votre/application/static
-         <Directory /chemin/vers/votre/application/static>
-             Require all granted
-         </Directory>
-     </VirtualHost>
-     ```
-   - Incluez des instructions pour redémarrer Apache pour appliquer les modifications.
+   Maintenant que notre application Flask est prête, nous devons la déployer sur un serveur Apache. Apache ne comprend pas directement le code Python, nous utiliserons donc WSGI pour servir notre application.
+
+   #### 1. **Configuration de WSGI**
+   Créez un fichier `.wsgi` dans le répertoire de l’application :
+   ```bash
+   nano flask-app.wsgi
+   ```
+   Ajoutez le contenu suivant :
+   ```python
+   import sys
+   sys.path.insert(0, "/var/www/flask-wsgi-apache-setup")
+   from app import app as application
+   ```
+
+   #### 2. **Configuration d'Apache**
+   Accédez au dossier de configuration d'Apache :
+   ```bash
+   cd /etc/apache2/sites-available
+   ```
+   Créez un fichier de configuration :
+   ```bash
+   nano flask-wsgi-apache-setup.conf
+   ```
+   Ajoutez-y le contenu suivant, en remplaçant `yourdomain.com` par votre adresse IP :
+   ```apache
+   <VirtualHost *:80>
+     ServerName yourdomain.com
+     DocumentRoot /var/www/flask-wsgi-apache-setup
+
+     WSGIDaemonProcess app user=www-data group=www-data threads=5 python-home=/var/www/flask-wsgi-apache-setup/flask-venv
+     WSGIScriptAlias / /var/www/flask-wsgi-apache-setup/flask-app.wsgi
+
+     ErrorLog ${APACHE_LOG_DIR}/flask-error.log
+     CustomLog ${APACHE_LOG_DIR}/flask-access.log combined
+
+     <Directory /var/www/flask-wsgi-apache-setup>
+       WSGIProcessGroup app
+       WSGIApplicationGroup %{GLOBAL}
+       Require all granted
+     </Directory>
+   </VirtualHost>
+   ```
+
+   Redémarrez Apache pour appliquer les modifications :
+   ```bash
+   sudo a2dissite 000-default.conf
+   sudo a2ensite flask-wsgi-apache-setup.conf
+   sudo systemctl restart apache2
+   ```
 
 ### 7. **Tester l'Application**
-   - Montrez comment vérifier que le déploiement a bien fonctionné, en accédant à l'adresse IP ou au domaine du serveur.
+   Pour vérifier que tout fonctionne, entrez l'adresse IP dans votre navigateur.
 
-### 8. **Résolution de Problèmes**
-   - Mentionnez les erreurs courantes, comme des permissions ou des erreurs de chemin.
-   - Proposez des solutions ou des liens vers des ressources.
+### 8. **Ressources Utiles**
+   - [Documentation Flask](https://flask.palletsprojects.com/)
+   - [Documentation Apache](https://httpd.apache.org/docs/)
+   - [Documentation WSGI](https://wsgi.readthedocs.io/)
 
-### 9. **Ressources Utiles**
-   - Ajoutez des liens vers la documentation officielle de Flask, Apache, et WSGI.
-
-### 10. **Licence**
+### 9. **Licence**
    MIT License
-
----
-
-**Exemple de README :**
-
-```markdown
-# Déployer une Application Flask sur Apache avec WSGI
-
-## Description
-Ce guide explique comment déployer une application Flask sur un serveur Apache en utilisant le module WSGI pour une production simple et efficace.
-
-## Table des Matières
-- [Prérequis](#prérequis)
-- [Installation](#installation)
-- [Configuration de l'Application Flask](#configuration-de-lapplication-flask)
-- [Configuration d'Apache](#configuration-dapache)
-- [Tester l'Application](#tester-lapplication)
-- [Résolution de Problèmes](#résolution-de-problèmes)
-- [Ressources Utiles](#ressources-utiles)
-- [Licence](#licence)
-
-## Prérequis
-- Python 3.x
-- Flask
-- Apache HTTP Server
-- Module WSGI (mod_wsgi)
-```
